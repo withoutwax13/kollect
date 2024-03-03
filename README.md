@@ -1,0 +1,2 @@
+# Project Description
+- Kollect is a vibrant online platform for trading K-pop photocards. Connect with fellow fans, buy and sell cards, and build your collection with ease. Join the K-pop community and discover rare treasures to enrich your fandom experience.
