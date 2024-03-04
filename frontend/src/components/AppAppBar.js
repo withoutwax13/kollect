@@ -128,7 +128,6 @@ function AppAppBar({ mode, toggleColorMode }) {
                 size="small"
                 component="a"
                 href="/login/"
-                target="_blank"
               >
                 Login
               </Button>
@@ -137,8 +136,7 @@ function AppAppBar({ mode, toggleColorMode }) {
                 variant="contained"
                 size="small"
                 component="a"
-                href="/Register/"
-                target="_blank"
+                href="/register/"
               >
                 Register
               </Button>
