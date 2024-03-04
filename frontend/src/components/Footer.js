@@ -10,7 +10,6 @@ import Typography from "@mui/material/Typography";
 
 import FacebookIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import TwitterIcon from "@mui/icons-material/X";
 import LibraryMusicIcon from "@mui/icons-material/LibraryMusic";
 
 const logoStyle = {
