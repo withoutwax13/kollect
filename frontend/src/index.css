@@ -1,0 +1,29 @@
+.card-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-content: center;
+    justify-content: center;
+    gap: 50px;
+}
+
+.chip-stack {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-content: center;
+}
+
+.page-container {
+    margin-top: 100px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.cards-filter-group {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-top: 10px;
+}

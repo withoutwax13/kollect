@@ -1,6 +1,9 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCurrentUser } from "../utils/actions";
+
 import Box from "@mui/material/Box";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -13,13 +16,13 @@ import Drawer from "@mui/material/Drawer";
 import MenuIcon from "@mui/icons-material/Menu";
 import ToggleColorMode from "./ToggleColorMode";
 
-import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
+import LibraryMusicIcon from "@mui/icons-material/LibraryMusic";
 
 const logoStyle = {
   width: "60px",
   height: "40px",
   cursor: "pointer",
-  marginLeft: "12px"
+  marginLeft: "12px",
 };
 
 function AppAppBar({ mode, toggleColorMode }) {
@@ -42,6 +45,13 @@ function AppAppBar({ mode, toggleColorMode }) {
       setOpen(false);
     }
   };
+
+  const dispatch = useDispatch();
+  const auth = useSelector(({ auth }) => auth);
+
+  React.useEffect(() => {
+    dispatch(fetchCurrentUser());
+  }, [dispatch]);
 
   return (
     <div>
@@ -77,43 +87,90 @@ function AppAppBar({ mode, toggleColorMode }) {
                   : "0 0 1px rgba(2, 31, 59, 0.7), 1px 1.5px 2px -1px rgba(2, 31, 59, 0.65), 4px 4px 12px -2.5px rgba(2, 31, 59, 0.65)",
             })}
           >
-            <Box
-              sx={{
-                flexGrow: 1,
-                display: "flex",
-                alignItems: "center",
-                ml: "-18px",
-                px: 0,
-              }}
-            >
-              <LibraryMusicIcon style={logoStyle}/> <Typography variant="h5" color="primary" marginRight={2}>Kollect</Typography>
-              <Box sx={{ display: { xs: "none", md: "flex" } }}>
-                <MenuItem
-                  onClick={() => scrollToSection("features")}
-                  sx={{ py: "6px", px: "12px" }}
-                >
-                  <Typography variant="body2" color="text.primary">
-                    Features
-                  </Typography>
-                </MenuItem>
-                <MenuItem
-                  onClick={() => scrollToSection("highlights")}
-                  sx={{ py: "6px", px: "12px" }}
-                >
-                  <Typography variant="body2" color="text.primary">
-                    Highlights
-                  </Typography>
-                </MenuItem>
-                <MenuItem
-                  onClick={() => scrollToSection("faq")}
-                  sx={{ py: "6px", px: "12px" }}
-                >
-                  <Typography variant="body2" color="text.primary">
-                    FAQ
-                  </Typography>
-                </MenuItem>
+            {auth.isLoggedIn === false ? (
+              <Box
+                sx={{
+                  flexGrow: 1,
+                  display: "flex",
+                  alignItems: "center",
+                  ml: "-18px",
+                  px: 0,
+                }}
+              >
+                <LibraryMusicIcon style={logoStyle} />{" "}
+                <Typography variant="h5" color="primary" marginRight={2}>
+                  Kollect
+                </Typography>
+                <Box sx={{ display: { xs: "none", md: "flex" } }}>
+                  <MenuItem
+                    onClick={() => scrollToSection("features")}
+                    sx={{ py: "6px", px: "12px" }}
+                  >
+                    <Typography variant="body2" color="text.primary">
+                      Features
+                    </Typography>
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => scrollToSection("highlights")}
+                    sx={{ py: "6px", px: "12px" }}
+                  >
+                    <Typography variant="body2" color="text.primary">
+                      Highlights
+                    </Typography>
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => scrollToSection("faq")}
+                    sx={{ py: "6px", px: "12px" }}
+                  >
+                    <Typography variant="body2" color="text.primary">
+                      FAQ
+                    </Typography>
+                  </MenuItem>
+                </Box>
               </Box>
-            </Box>
+            ) : (
+              <Box
+                sx={{
+                  flexGrow: 1,
+                  display: "flex",
+                  alignItems: "center",
+                  ml: "-18px",
+                  px: 0,
+                }}
+              >
+                <LibraryMusicIcon style={logoStyle} />{" "}
+                <Typography variant="h5" color="primary" marginRight={2}>
+                  Kollect
+                </Typography>
+                <Box sx={{ display: { xs: "none", md: "flex" } }}>
+                  <MenuItem
+                    onClick={() => window.location.replace("/cards")}
+                    sx={{ py: "6px", px: "12px" }}
+                  >
+                    <Typography variant="body2" color="text.primary">
+                      Photocards
+                    </Typography>
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => window.location.replace("/artists")}
+                    sx={{ py: "6px", px: "12px" }}
+                  >
+                    <Typography variant="body2" color="text.primary">
+                      Artists
+                    </Typography>
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => window.location.replace("/profile")}
+                    sx={{ py: "6px", px: "12px" }}
+                  >
+                    <Typography variant="body2" color="text.primary">
+                      Profile
+                    </Typography>
+                  </MenuItem>
+                </Box>
+              </Box>
+            )}
+
             <Box
               sx={{
                 display: { xs: "none", md: "flex" },
@@ -122,24 +179,28 @@ function AppAppBar({ mode, toggleColorMode }) {
               }}
             >
               <ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} />
-              <Button
-                color="primary"
-                variant="text"
-                size="small"
-                component="a"
-                href="/login/"
-              >
-                Login
-              </Button>
-              <Button
-                color="primary"
-                variant="contained"
-                size="small"
-                component="a"
-                href="/register/"
-              >
-                Register
-              </Button>
+              {auth.isLoggedIn === false && (
+                <>
+                  <Button
+                    color="primary"
+                    variant="text"
+                    size="small"
+                    component="a"
+                    href="/login/"
+                  >
+                    Login
+                  </Button>
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    size="small"
+                    component="a"
+                    href="/register/"
+                  >
+                    Register
+                  </Button>
+                </>
+              )}
             </Box>
             <Box sx={{ display: { sm: "", md: "none" } }}>
               <Button
@@ -173,46 +234,57 @@ function AppAppBar({ mode, toggleColorMode }) {
                       toggleColorMode={toggleColorMode}
                     />
                   </Box>
-                  <MenuItem onClick={() => scrollToSection("features")}>
-                    Features
-                  </MenuItem>
-                  <MenuItem onClick={() => scrollToSection("testimonials")}>
-                    Testimonials
-                  </MenuItem>
-                  <MenuItem onClick={() => scrollToSection("highlights")}>
-                    Highlights
-                  </MenuItem>
-                  <MenuItem onClick={() => scrollToSection("pricing")}>
-                    Pricing
-                  </MenuItem>
-                  <MenuItem onClick={() => scrollToSection("faq")}>
-                    FAQ
-                  </MenuItem>
-                  <Divider />
-                  <MenuItem>
-                    <Button
-                      color="primary"
-                      variant="contained"
-                      component="a"
-                      href="/material-ui/getting-started/templates/sign-up/"
-                      target="_blank"
-                      sx={{ width: "100%" }}
-                    >
-                      Sign up
-                    </Button>
-                  </MenuItem>
-                  <MenuItem>
-                    <Button
-                      color="primary"
-                      variant="outlined"
-                      component="a"
-                      href="/material-ui/getting-started/templates/sign-in/"
-                      target="_blank"
-                      sx={{ width: "100%" }}
-                    >
-                      Sign in
-                    </Button>
-                  </MenuItem>
+                  {auth.isLoggedIn === false && (
+                    <>
+                      <MenuItem onClick={() => scrollToSection("features")}>
+                        Features
+                      </MenuItem>
+                      <MenuItem onClick={() => scrollToSection("highlights")}>
+                        Highlights
+                      </MenuItem>
+                      <MenuItem onClick={() => scrollToSection("faq")}>
+                        FAQ
+                      </MenuItem>
+                      <Divider />
+                      <MenuItem>
+                        <Button
+                          color="primary"
+                          variant="contained"
+                          component="a"
+                          href="/material-ui/getting-started/templates/sign-up/"
+                          target="_blank"
+                          sx={{ width: "100%" }}
+                        >
+                          Sign up
+                        </Button>
+                      </MenuItem>
+                      <MenuItem>
+                        <Button
+                          color="primary"
+                          variant="outlined"
+                          component="a"
+                          href="/material-ui/getting-started/templates/sign-in/"
+                          target="_blank"
+                          sx={{ width: "100%" }}
+                        >
+                          Sign in
+                        </Button>
+                      </MenuItem>
+                    </>
+                  )}
+                  {auth.isLoggedIn && (
+                    <>
+                      <MenuItem onClick={() => window.location.replace("/cards")}>
+                        Photocards
+                      </MenuItem>
+                      <MenuItem onClick={() => window.location.replace("/artists")}>
+                        Artists
+                      </MenuItem>
+                      <MenuItem onClick={() => window.location.replace("/profile")}>
+                        Profile
+                      </MenuItem>
+                    </>
+                  )}
                 </Box>
               </Drawer>
             </Box>
