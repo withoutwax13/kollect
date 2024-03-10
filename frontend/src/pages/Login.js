@@ -12,6 +12,8 @@ import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCurrentUser } from "../utils/actions";
 
 function Copyright(props) {
   return (
@@ -36,6 +38,17 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function Login() {
+
+  const dispatch = useDispatch();
+  const auth = useSelector(({ auth }) => auth);
+
+  React.useEffect(() => {
+    dispatch(fetchCurrentUser());
+    if(auth.isLoggedIn){
+      window.location.replace("/cards");
+    }
+  }, [dispatch, auth.isLoggedIn]);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
